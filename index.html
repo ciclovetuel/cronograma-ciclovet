@@ -72,6 +72,7 @@ main{padding:6px 14px 24px;max-width:640px;margin:0 auto}
 .mdl .bt a,.mdl .bt button{display:block;text-align:center;font:inherit;font-size:15px;font-weight:600;padding:12px 14px;border-radius:10px;cursor:pointer;text-decoration:none;border:1px solid var(--a)}
 .mdl .bt a{background:var(--a);color:var(--onA)}
 .mdl .bt button{background:transparent;color:var(--ink);border-color:var(--line);font-weight:500}
+.novadata{display:block;width:100%;margin-top:8px;font:inherit;font-size:14px;font-weight:600;padding:10px 12px;border-radius:9px;border:1px solid var(--a);background:var(--a);color:var(--onA);cursor:pointer}
 </style>
 </head>
 <body>
@@ -150,8 +151,8 @@ const DAYS=[
  E('17:30',0,'Premiação dos melhores trabalhos','',CG,'','d'),
  E('18:00',0,'Encerramento')]},
 {d:'2026-10-24',w:'Sáb',n:'24',ev:[
- E('07:00','08:00','Minicurso – Como transformar dados da avaliação genética de bovinos de corte em resultados na pecuária (teórico)','M.V. Antônio Francisco Chaves Neto','Sala de Seminários do HV','g'),
- E('08:00','12:30','VISITA TÉCNICA – A REMARCAR · Como transformar dados da avaliação genética de bovinos de corte em resultados na pecuária (prática)','M.V. Antônio Francisco Chaves Neto','Nova data e horário serão definidos no grupo de WhatsApp','g','r'),
+ E('07:00','08:00','CANCELADO – A REMARCAR · Minicurso – Como transformar dados da avaliação genética de bovinos de corte em resultados na pecuária (teórico)','M.V. Antônio Francisco Chaves Neto','Nova data e horário serão definidos no grupo de WhatsApp','g','r'),
+ E('08:00','12:30','CANCELADO – A REMARCAR · Minicurso – Como transformar dados da avaliação genética de bovinos de corte em resultados na pecuária (prática)','M.V. Antônio Francisco Chaves Neto','Nova data e horário serão definidos no grupo de WhatsApp','g','r'),
  E('08:00','12:00','Minicurso – Procedimentos essenciais na medicina de animais selvagens','M.V. Rafael Cazarini|M.V. Vitória Sales','Laboratório de Anatomia – CCB','s'),
  E('08:30','10:00','Minicurso – Medula em foco: indicações e técnicas de punção de medula óssea em pequenos animais (teórico)','Dr. Patrick Eugenio Luz','Lipoa','p'),
  E('10:20','11:50','Minicurso – Medula em foco (prática, turma 1)','Dr. Patrick Eugenio Luz','Sala de treinamento','p'),
@@ -199,7 +200,7 @@ function render(){
       const st=now>=e.en?'past':now>=e.st?'cur':'up';
       const hora=(+e.st===D.last&&!e.e)?e.s:`${e.s} às ${hm(e.en)}`;
       const sp=e.sp?e.sp.split('|').map(x=>`<p class="sp">${x}</p>`).join(''):'';
-      return `<article class="card st-${st}${e.k?' k-'+e.k:''}${e.y?' y-'+e.y:''}"><div class="hd"><span>${hora}</span>${e.k?`<span class="trk">${TR[e.k]}</span>`:''}<span class="agora">Agora</span></div><h3>${e.t}</h3>${sp}${e.l?`<p class="meta">Local: ${e.l}</p>`:''}</article>`}).join('')+`</div></section>`;
+      return `<article class="card st-${st}${e.k?' k-'+e.k:''}${e.y?' y-'+e.y:''}"><div class="hd"><span>${hora}</span>${e.k?`<span class="trk">${TR[e.k]}</span>`:''}<span class="agora">Agora</span></div><h3>${e.t}</h3>${sp}${e.l&&e.y!=='r'?`<p class="meta">Local: ${e.l}</p>`:''}${e.y==='r'?'<button type="button" class="novadata">Fique por dentro da nova data</button>':''}</article>`}).join('')+`</div></section>`;
   });
   if(today&&!placed)h+=line;
   $('list').innerHTML=h||'<p class="vazio">Nenhuma atividade nesta área neste dia.</p>';
@@ -223,6 +224,7 @@ setInterval(()=>{renderNav();render()},30000);
   const av=document.getElementById('aviso');
   const fecha=()=>{av.hidden=true};
   av.hidden=false;
+  document.getElementById('list').addEventListener('click',e=>{if(e.target.closest('.novadata')){av.hidden=false;document.getElementById('avZap').focus()}});
   document.getElementById('avIgn').addEventListener('click',fecha);
   document.getElementById('avZap').addEventListener('click',fecha);
   av.addEventListener('click',e=>{if(e.target===av)fecha()});
